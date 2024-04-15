@@ -2,7 +2,7 @@
   "name": "ui-terminal",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "prefix": "app",
+  "prefix": "ngx",
   "sourceRoot": "apps/ui-terminal/src",
   "tags": [],
   "targets": {
