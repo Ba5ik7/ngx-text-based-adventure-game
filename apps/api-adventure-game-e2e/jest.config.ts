@@ -15,5 +15,5 @@ export default {
     ],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/text-adventure-game-api-e2e',
+  coverageDirectory: '../../coverage/api-adventure-game-e2e',
 };
