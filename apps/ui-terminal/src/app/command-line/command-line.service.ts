@@ -5,40 +5,44 @@ import { tap } from 'rxjs';
 import { HELP, MESSAGE_OF_THE_DAY, HEARTHSTONE } from './static-messages';
 import { AdventureGameService } from '../shared/services/adventure-game.service';
 
+const XTERM_OPTIONS = {
+  cursorBlink: true,
+  fontFamily: 'Cascadia Code, monospace',
+  fontSize: 16,
+  convertEol: true,
+  allowTransparency: true,
+  theme: {
+    background: 'rgba(0, 0, 0, 0)',
+    foreground: '#7bb368',
+  },
+};
 @Injectable({
   providedIn: 'root',
 })
 export class CommandLineService {
-  private buffer = '';
-  private onDataCallBackDisposable: IDisposable | undefined;
   private readonly adventureGameService = inject(AdventureGameService);
   private readonly zone = inject(NgZone);
   private readonly fitAddon = new FitAddon();
-  private readonly terminal = new Terminal({
-    cursorBlink: true,
-    fontFamily: 'Cascadia Code, monospace',
-    fontSize: 16,
-    convertEol: true,
-    allowTransparency: true,
-    theme: {
-      background: 'rgba(0, 0, 0, 0)',
-      foreground: '#7bb368',
-    },
-  });
+  private readonly terminal = new Terminal(XTERM_OPTIONS);
+
+  private buffer = '';
+  private onDataCallBackDisposable: IDisposable | undefined;
 
   init(terminalDiv: ElementRef) {
-    this.zone.runOutsideAngular(() => {
-      this.terminal.loadAddon(this.fitAddon);
-      this.terminal.open(terminalDiv.nativeElement);
-      this.terminal.writeln(MESSAGE_OF_THE_DAY);
-      this.fitAddon.fit();
-      this.prompt();
-      this.terminal.focus();
-    });
     return this.adventureGameService.isGameRunning$.pipe(
       tap((isRunning) => {
-        if (this.onDataCallBackDisposable)
+        this.zone.runOutsideAngular(() => {
+          this.terminal.loadAddon(this.fitAddon);
+          this.terminal.open(terminalDiv.nativeElement);
+          this.terminal.writeln(MESSAGE_OF_THE_DAY);
+          this.fitAddon.fit();
+          this.prompt();
+          this.terminal.focus();
+        });
+
+        if (this.onDataCallBackDisposable) {
           this.onDataCallBackDisposable.dispose();
+        }
         this.onDataCallBackDisposable = this.terminal.onData((data) =>
           this.handleInput(data, isRunning)
         );
