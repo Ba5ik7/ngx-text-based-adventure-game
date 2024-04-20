@@ -1,1 +1,1 @@
-export const MESSAGE_OF_THE_DAY = `Hello!`;
+export const MESSAGE_OF_THE_DAY = `MESSAGE_OF_THE_DAY!`;

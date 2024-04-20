@@ -7,8 +7,8 @@ import {
   viewChild,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { map, switchMap } from 'rxjs';
-import { CommandLineService } from './command-line.service';
+import { map, tap } from 'rxjs';
+import { CommandLineService } from './services/command-line.service';
 
 @Component({
   selector: 'ngx-command-line',
@@ -17,9 +17,9 @@ import { CommandLineService } from './command-line.service';
   template: `
     <div class="crt">
       <div
-        #terminalDiv
+        #commandLineDiv
         class="terminal-container"
-        [ngClass]="terminalStyle$ | async"
+        [ngClass]="commandLineInputClass$ | async"
       ></div>
     </div>
   `,
@@ -77,10 +77,10 @@ import { CommandLineService } from './command-line.service';
 })
 export class CommandLineComponent {
   commandLineService = inject(CommandLineService);
-  terminalSignal = viewChild.required<ElementRef>('terminalDiv');
+  commandLineSignal = viewChild.required<ElementRef>('commandLineDiv');
 
-  terminalStyle$ = toObservable(this.terminalSignal).pipe(
-    switchMap((terminalDiv) => this.commandLineService.init(terminalDiv)),
+  commandLineInputClass$ = toObservable(this.commandLineSignal).pipe(
+    tap((commandLineDiv) => this.commandLineService.initCommandLine(commandLineDiv)), // side effects 😞
     map(() => 'inited')
   );
 }

@@ -10,7 +10,7 @@ export class AdventureGameService {
   private readonly isGameRunning = new BehaviorSubject<boolean>(false);
   isGameRunning$ = this.isGameRunning.asObservable();
 
-  init() {
+  initGame() {
     this.isGameRunning.next(true);
   }
 
