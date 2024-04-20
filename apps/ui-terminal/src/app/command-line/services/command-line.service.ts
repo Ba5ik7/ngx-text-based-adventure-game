@@ -3,7 +3,7 @@ import { FitAddon } from '@xterm/addon-fit';
 import { Terminal } from '@xterm/xterm';
 import { of } from 'rxjs';
 import { AdventureGameService } from '../../shared/services/adventure-game.service';
-import { initCommands, COMMANDS } from './commands';
+import { initCommands } from './commands';
 
 const BACKSPACE_SPACE_BACKSPACE = '\b \b';
 
