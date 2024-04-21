@@ -19,7 +19,7 @@ import { CommandLineService } from './services/command-line.service';
       <div
         #commandLineDiv
         class="terminal-container"
-        [ngClass]="commandLineInputClass$ | async"
+        [ngClass]="initCommandLineInput$ | async"
       ></div>
     </div>
   `,
@@ -79,8 +79,10 @@ export class CommandLineComponent {
   commandLineService = inject(CommandLineService);
   commandLineSignal = viewChild.required<ElementRef>('commandLineDiv');
 
-  commandLineInputClass$ = toObservable(this.commandLineSignal).pipe(
-    tap((commandLineDiv) => this.commandLineService.initCommandLine(commandLineDiv)), // side effects 😞
+  initCommandLineInput$ = toObservable(this.commandLineSignal).pipe(
+    tap((commandLineDiv) =>
+      this.commandLineService.initCommandLine(commandLineDiv)
+    ), // side effects 😞
     map(() => 'inited')
   );
 }
