@@ -7,7 +7,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { map, tap } from 'rxjs';
+import { map, mergeMap } from 'rxjs';
 import { CommandLineService } from './services/command-line.service';
 
 @Component({
@@ -80,7 +80,7 @@ export class CommandLineComponent {
   commandLineSignal = viewChild.required<ElementRef>('commandLineDiv');
 
   initCommandLineInput$ = toObservable(this.commandLineSignal).pipe(
-    tap((commandLineDiv) =>
+    mergeMap((commandLineDiv) =>
       this.commandLineService.initCommandLine(commandLineDiv)
     ), // side effects 😞
     map(() => 'inited')
